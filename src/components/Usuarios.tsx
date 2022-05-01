@@ -9,10 +9,28 @@ const Usuarios = () => {
     reqResApi
       .get<ReqResListado>("/users")
       .then((resp) => {
-        console.log(resp.data.data[0].last_name);
+        // console.log(resp.data.data[0].last_name);
+        setUsuarios(resp.data.data);
       })
       .catch(console.error);
   }, []);
+
+  // const renderItem = (usuario: User) => {
+  const renderItem = ({ id, avatar, first_name, last_name, email }: User) => {
+    return (
+      <tr key={id.toString()}>
+        <td>
+          <img
+            src={avatar}
+            alt={first_name}
+            style={{ width: 35, borderRadius: 100 }}
+          />
+        </td>
+        <td>{`${first_name} ${last_name}`}</td>
+        <td>{email}</td>
+      </tr>
+    );
+  };
 
   return (
     <>
@@ -25,8 +43,9 @@ const Usuarios = () => {
             <th>Email</th>
           </tr>
         </thead>
-        <tbody></tbody>
+        <tbody>{usuarios.map((usuario) => renderItem(usuario))}</tbody>
       </table>
+      <button className="btn btn-primary">Siguientes</button>
     </>
   );
 };
